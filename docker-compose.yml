@@ -3,7 +3,7 @@ services:
     build: ./
     entrypoint: dotnet fileServer.dll
     ports:
-      - "5290:5290"
+      - "5291:5290"
     restart: always
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:5290
@@ -14,6 +14,8 @@ services:
       - aspnetcore-network
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - ./wwwroot/Files:/app/Files
   postgreSQL:
     image: postgres:16-alpine
     environment:
@@ -21,7 +23,7 @@ services:
       - POSTGRES_PASSWORD=1
       - POSTGRES_DB=docsdb
     ports:
-      - "5433:5432"
+      - "5434:5432"
     restart: always
     networks:
       - aspnetcore-network

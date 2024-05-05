@@ -1,4 +1,7 @@
 using fileServer.Services.Databases;
+using fileServer.Services.FileService;
+using fileServer.Services.RepositoryService.Interfaces;
+using fileServer.Services.RepositoryService.Repository;
 using Microsoft.EntityFrameworkCore;
 
 class Programm
@@ -16,7 +19,10 @@ class Programm
 
         builder.Services.AddDbContext<ApplicationContext>(opt => opt.UseNpgsql(connection));
 
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllers();
+
+        builder.Services.AddTransient<IFileService, FileService>();
+        builder.Services.AddTransient<IFileRepository, FileRepository>();
         
         var app = builder.Build();    
 

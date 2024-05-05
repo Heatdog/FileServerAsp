@@ -15,8 +15,10 @@ namespace fileServer.Controllers{
         }
         [HttpPost, Route("insert")]
         public async Task<IResult> Insert(IFormFile file){
+            Console.WriteLine("Get file");
             var fileID = Guid.NewGuid();
-            var path = Path.GetFullPath(Path.Combine(_env.WebRootPath, $"Files/{fileID}"));
+            var path = $"/app/Files/{fileID}";
+            Console.WriteLine($"file id - {fileID}, path - {path}");
             var res = await _fileService.UploadFile(path, file);
             if (!res){
                 return Results.BadRequest();
@@ -25,6 +27,7 @@ namespace fileServer.Controllers{
             if (err != Errors.None){
                 return Results.Json(new ErrorMessage(err), statusCode: 500);
             }
+            Console.WriteLine(fileID);
             return Results.Ok(fileID);
         }
         [HttpGet, Route("get/{id:guid}")]
@@ -33,8 +36,10 @@ namespace fileServer.Controllers{
             if (path == null){
                 return Results.Json(new ErrorMessage(Errors.EmptyValue), statusCode: 500);
             }
+            Console.WriteLine($"read file from {path}");
 
             var fileBytes = System.IO.File.ReadAllBytes(path);
+            Console.WriteLine(fileBytes.Length);
             return Results.File(fileBytes, "application/pdf");
         } 
     }

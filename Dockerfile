@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet AS base
 WORKDIR /app
 
+RUN mkdir Files
+
 FROM mcr.microsoft.com/dotnet/sdk AS build
 WORKDIR /src
 COPY ["fileServer.csproj", "/src"]
